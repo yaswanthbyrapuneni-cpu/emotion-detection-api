@@ -14,7 +14,19 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-CORS(app)
+
+# Configure CORS with explicit origins and OPTIONS support
+CORS(app, 
+     resources={r"/*": {
+         "origins": [
+             "https://monumental-toffee-c08772.netlify.app",
+             "http://localhost:5173",
+             "http://localhost:3000"
+         ],
+         "methods": ["GET", "POST", "OPTIONS"],
+         "allow_headers": ["Content-Type"],
+         "supports_credentials": False
+     }})
 
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -99,5 +111,5 @@ def detect_emotion():
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    logger.info(f"🚀 Starting on port {port}")
+    logger.info(f"ðŸš€ Starting on port {port}")
     app.run(host='0.0.0.0', port=port, debug=False)
